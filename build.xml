@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project GAuth_CLI">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/Users/eli/dev/workspacs/Auth/GAuth_CLI/dist/gauth_cli.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="GAuth_CLI.Main"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="/Users/eli/dev/workspacs/Auth/GAuth_CLI/bin"
+            	excludes="**/gauth.cfg"/>
+        </jar>
+    </target>
+</project>
