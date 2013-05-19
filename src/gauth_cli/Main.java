@@ -21,15 +21,53 @@ import java.util.TimerTask;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+
 public class Main {
+
 	Timer timer;
+
+	@Parameter(names = { "-c", "--config" }, description = "Config file location")
+	public String configFile = "./gauth.cfg";
+
+	@Parameter(names = { "-s", "--secret" }, description = "Secret")
+	public String cSecret;
+
+	@Parameter(names = { "-h", "--help" }, description = "Show usage")
+	public boolean cUsage = false;
+
+	@Parameter(names = { "-l", "--list" }, description = "List accounts")
+	public boolean cList = false;
+
+	@Parameter(names = { "-a", "--account" }, description = "Use account #")
+	public Integer cAccount = -1;
+
+	@Parameter(names = { "-i", "--interactive" }, description = "Display timer and codes")
+	public boolean cInteractive = false;
+
+	//
 
 	public static void main(String[] args) {
 
+		Main main = new Main();
+		main.run(args);
+
+	}
+
+	public void run(String[] args) {
+
 		try {
 
+			JCommander jcommander = new JCommander(this, args);
+
+			if (cUsage) {
+				jcommander.usage();
+				return;
+			}
+
 			List<String[]> auths = new ArrayList<String[]>();
-			Scanner scanner = new Scanner(new FileInputStream("./gauth.cfg"),
+			Scanner scanner = new Scanner(new FileInputStream(configFile),
 					"UTF-8");
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
@@ -39,37 +77,66 @@ public class Main {
 				}
 			}
 
-			System.out.println("\nAuthenticator Started\n");
+			// List Accounts
 
-			int selection = 0;
-
-			if (auths.size() > 1) {
+			if (cList) {
 				for (int i = 0; i < auths.size(); i++) {
 					System.out.println(i + " : " + auths.get(i)[0]);
 				}
-
-				System.out.print("\nSelect account: -> ");
-
-				InputStreamReader sysIn = new InputStreamReader(System.in);
-				BufferedReader input = new BufferedReader(sysIn);
-				String userInput = input.readLine();
-
-				selection = Integer.parseInt(userInput);
+				return;
 			}
 
-			System.out.println("\nGenerating codes for: "
-					+ auths.get(selection)[0]);
+			//
 
-			System.out.println(":----------------------------:--------:");
-			System.out.println(":       Code Wait Time       :  Code  :");
-			System.out.println(":----------------------------:--------:");
-			Main main = new Main();
+			int selection = 0;
 
-			main.reminder(auths.get(selection)[1]);
+			if (cAccount != -1) {
+				selection = cAccount;
+			} else {
+
+				if (auths.size() > 1) {
+					for (int i = 0; i < auths.size(); i++) {
+						System.out.println(i + " : " + auths.get(i)[0]);
+					}
+
+					System.out.print("\nSelect account: -> ");
+
+					InputStreamReader sysIn = new InputStreamReader(System.in);
+					BufferedReader input = new BufferedReader(sysIn);
+					String userInput = input.readLine();
+
+					selection = Integer.parseInt(userInput.trim());
+					
+					System.out.println("");
+				}
+			}
+			
+			String secret = cSecret != null ? cSecret : auths.get(selection)[1];
+			
+			if (cInteractive) {
+
+				System.out.println("Generating codes for: "
+						+ auths.get(selection)[0]);
+
+				System.out.println(":----------------------------:--------:");
+				System.out.println(":       Code Wait Time       :  Code  :");
+				System.out.println(":----------------------------:--------:");
+				Main main = new Main();
+
+				main.reminder(auths.get(selection)[1]);
+
+			} else {
+
+				String newout = Main.computePin(secret, null);
+				
+				System.out.println(newout);
+				
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public void reminder(String secret) {
