@@ -2,6 +2,18 @@
 
 ## Install / Configuration
 
+Rename the gauth.cfg-sample to gauth.cfg
+
+Added your account and secret information 
+
+```
+# GAuth_CLI Configuration File
+#
+# Format: account_name:secret
+#
+john.doe@gmail.com:1234567890123456
+some.other.site:0987654321123456
+```
 
 
 ## Running
@@ -31,6 +43,12 @@ Usage: <main class> [options]
     -s, --secret
        Secret
 ```
+
+## Notes
+
+**How to get the Google Account Auth secret**
+
+The totp secret embedded in the QR code. Use a separate QR reader to scan the QR code to view and link. It will look like "otpauth://totp/mail@gmail.com?secret=**1234567890123456**"
 
 ## Credits / Licenses
  * James Cuff and Michele Clamp 2011/2012

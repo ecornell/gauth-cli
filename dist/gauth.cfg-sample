@@ -1,0 +1,6 @@
+# GAuth_CLI Configuration File
+#
+# Format: account_name:secret
+#
+john.doe@gmail.com:1234567890123456
+some.other.site:0987654321123456
