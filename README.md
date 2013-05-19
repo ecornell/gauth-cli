@@ -48,7 +48,7 @@ Usage: <main class> [options]
 
 **How to get the Google Account Auth secret**
 
-The totp secret embedded in the QR code. Use a separate QR reader to scan the QR code to view and link. It will look like "otpauth://totp/mail@gmail.com?secret=**1234567890123456**"
+The totp secret embedded in the QR code. Use a separate QR reader to scan the QR code to view the link. It will look like "otpauth://totp/mail@gmail.com?secret=1234567890123456"
 
 ## Credits / Licenses
  * James Cuff and Michele Clamp 2011/2012
