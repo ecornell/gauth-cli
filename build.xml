@@ -5,7 +5,7 @@
     <target name="create_run_jar">
         <jar destfile="/Users/eli/dev/workspacs/Auth/GAuth_CLI/dist/gauth_cli.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="GAuth_CLI.Main"/>
+                <attribute name="Main-Class" value="gauth_cli.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="/Users/eli/dev/workspacs/Auth/GAuth_CLI/bin"
